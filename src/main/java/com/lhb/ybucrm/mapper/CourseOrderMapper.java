@@ -15,4 +15,9 @@ public interface CourseOrderMapper {
 
     List<CourseOrder> findListByMap(Map map);
 
+    void insert(CourseOrder order);
+
+    CourseOrder findByOrderId(String order_id);
+
+    void deleteByOrderId(String order_id);
 }

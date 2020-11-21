@@ -11,4 +11,9 @@ public interface ICourseOrderService {
 
     PageResult<CourseOrder> findPageResult(CourseOrder condition,int page,int pageSize);
 
+    void save(CourseOrder order);
+
+    CourseOrder findByOrderId(String order_id);
+
+    void deleteByOrderId(String order_id);
 }
