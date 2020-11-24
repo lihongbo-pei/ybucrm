@@ -1,7 +1,10 @@
 package com.lhb.ybucrm.service;
 
 import com.lhb.ybucrm.model.CourseOrder;
+import com.lhb.ybucrm.model.MonthIncome;
 import com.lhb.ybucrm.model.PageResult;
+
+import java.util.List;
 
 /**
  * @author littlelee
@@ -16,4 +19,8 @@ public interface ICourseOrderService {
     CourseOrder findByOrderId(String order_id);
 
     void deleteByOrderId(String order_id);
+
+    void update(CourseOrder order);
+
+    List<MonthIncome> getMonthIncomes();
 }

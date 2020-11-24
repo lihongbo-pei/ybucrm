@@ -34,6 +34,14 @@ public class CourseOrderController {
         return "courseorder/add";
     }
 
+    @RequestMapping("/edit")
+    public String edit(Model model,String order_id){
+        System.out.println("修改订单ID="+order_id);
+        CourseOrder order = orderService.findByOrderId(order_id);
+        model.addAttribute("order",order);
+        return "courseorder/edit";
+    }
+
     @RequestMapping("/detail")
     public String detail(Model model,String order_id){
         CourseOrder order = orderService.findByOrderId(order_id);
@@ -53,16 +61,21 @@ public class CourseOrderController {
     @ResponseBody
     public CURDResult save(CourseOrder order){
         CURDResult result = new CURDResult();
+        if (order.getOrder_id() == null || order.getOrder_id().length() == 0){
+            orderService.save(order);
+        }else {
+            orderService.update(order);
+        }
 //        System.out.println(order);
-        orderService.save(order);
         return result;
     }
 
 
     @RequestMapping("listJson")
     @ResponseBody
-    public PageResult<CourseOrder> listJson(int page,int limit){
-        PageResult<CourseOrder> result = orderService.findPageResult(null,page,limit);
+    public PageResult<CourseOrder> listJson(CourseOrder condition,int page,int limit){
+        System.out.println(condition);
+        PageResult<CourseOrder> result = orderService.findPageResult(condition,page,limit);
 
         return result;
     }

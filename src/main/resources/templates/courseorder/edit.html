@@ -17,19 +17,20 @@
         <div class="layui-inline">
             <label class="layui-form-label">姓名</label>
             <div class="layui-input-inline">
-                <input name="name" class="layui-input" type="text" autocomplete="off" lay-verify="required">
+                <input type="hidden" name="order_id" th:value="${order.order_id}">
+                <input name="name" th:value="${order.name}" class="layui-input" type="text" autocomplete="off" lay-verify="required">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">WeChat号</label>
             <div class="layui-input-inline">
-                <input name="wechat_no" class="layui-input" type="text" autocomplete="off" lay-verify="required">
+                <input name="wechat_no" th:value="${order.wechat_no}" class="layui-input" type="text" autocomplete="off" lay-verify="required">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">WeChat备注</label>
             <div class="layui-input-inline">
-                <input name="wechat_mark" class="layui-input" type="text" autocomplete="off" lay-verify="required">
+                <input name="wechat_mark" th:value="${order.wechat_mark}" class="layui-input" type="text" autocomplete="off" lay-verify="required">
             </div>
         </div>
     </div>
@@ -38,13 +39,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">QQ</label>
             <div class="layui-input-inline">
-                <input name="qq_no" class="layui-input" type="tel" autocomplete="off" >
+                <input name="qq_no" th:value="${order.qq_no}" class="layui-input" type="tel" autocomplete="off" >
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">手机</label>
             <div class="layui-input-inline">
-                <input name="tel" class="layui-input" type="text" autocomplete="off" >
+                <input name="tel" th:value="${order.tel}" class="layui-input" type="text" autocomplete="off" >
             </div>
         </div>
     </div>
@@ -53,7 +54,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">购买课程</label>
             <div class="layui-input-inline">
-                <select name="course_name" lay-search="" lay-verify="required">
+                <select name="course_name" id="course_name" lay-search="" lay-verify="required">
                     <option value="">直接选择或搜索选择</option>
                     <option value="Java从入门到精通">Java从入门到精通</option>
                     <option value="Python从入门到实战">Python从入门到实战</option>
@@ -64,31 +65,29 @@
         <div class="layui-inline">
             <label class="layui-form-label">购买价格</label>
             <div class="layui-input-inline">
-                <input name="course_price" class="layui-input" type="text" autocomplete="off">
+                <input name="course_price" th:value="${order.course_price}" class="layui-input" type="text" autocomplete="off">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">购买日期</label>
             <div class="layui-input-inline">
-                <input name="order_date" class="layui-input" id="order_date" type="text" placeholder="yyyy-MM-dd" autocomplete="off" lay-verify="date">
+                <input name="order_date" th:value="${order.order_date}" class="layui-input" id="order_date" type="text" placeholder="yyyy-MM-dd" autocomplete="off" lay-verify="date">
             </div>
         </div>
     </div>
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" type="button" onclick="doSave()" lay-filter="demo1" lay-submit="">立即提交</button>
-            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+            <button class="layui-btn" type="button" onclick="doSave()" lay-filter="demo1" lay-submit="">更新提交</button>
         </div>
     </div>
-
 
 
 </form>
 
 
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-<script>
+<script th:inline="javascript">
     var $,layer;
     layui.use(['form','laydate'], function(){
 
@@ -101,6 +100,11 @@
             elem: '#order_date'
         });
 
+        // 设置select的默认选中课程
+        var course_name_value = [[${order.course_name}]];// 取到当前页面的课程名称
+        var select = 'dd[lay-value=' + course_name_value + ']';// 属性选择器
+        $('#course_name').siblings("div.layui-form-select").find('dl').find(select).click();
+
     })
 
     function doSave() {
@@ -110,11 +114,11 @@
         $.post("/courseorder/save",requestData,function (responseData) {
             console.log(responseData);
             if (responseData.success == 1){
-                layer.alert("添加成功！",{yes:function () {
+                layer.alert("修改成功！",{yes:function () {
                         parent.layer.closeAll();
                     }})
             }else {
-                layer.alert("添加失败！",{yes:function () {
+                layer.alert("修改失败！",{yes:function () {
                         parent.layer.closeAll();
                     }})
             }
